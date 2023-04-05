@@ -1,70 +1,6 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 109:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__nccwpck_require__(186));
-const tablemark_1 = __importDefault(__nccwpck_require__(567));
-function run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const json = core.getInput('json');
-            core.debug(`Received json string ${json}...`); // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
-            const jsonArray = JSON.parse(json);
-            core.debug(`Parsed json string...`);
-            if (!Array.isArray(jsonArray)) {
-                return core.setFailed('Input json is not an array.');
-            }
-            const table = (0, tablemark_1.default)(jsonArray);
-            core.debug(`Table: ${table}`);
-            core.setOutput('table', table);
-        }
-        catch (error) {
-            if (error instanceof Error)
-                core.setFailed(error.message);
-        }
-    });
-}
-run();
-
-
-/***/ }),
-
 /***/ 351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -2442,185 +2378,6 @@ function width(text, max){
 
 /***/ }),
 
-/***/ 567:
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
-
-"use strict";
-// ESM COMPAT FLAG
-__nccwpck_require__.r(__webpack_exports__);
-
-// EXPORTS
-__nccwpck_require__.d(__webpack_exports__, {
-  "alignmentOptions": () => (/* binding */ alignmentOptions),
-  "default": () => (/* binding */ tablemark_dist),
-  "toCellText": () => (/* reexport */ toCellText)
-});
-
-// EXTERNAL MODULE: ./node_modules/sentence-case/dist/index.js
-var dist = __nccwpck_require__(229);
-// EXTERNAL MODULE: ./node_modules/split-text-to-chunks/index.js
-var split_text_to_chunks = __nccwpck_require__(624);
-;// CONCATENATED MODULE: ./node_modules/tablemark/dist/utilities.js
-
-
-
-const columnsWidthMin = 5;
-const pipeRegex = /\|/g;
-const alignmentSet = new Set([
-    "LEFT",
-    "CENTER",
-    "RIGHT"
-]);
-const pad = (alignment, width, content) => {
-    if (alignment == null || alignment === alignmentOptions.left) {
-        return content.padEnd(width);
-    }
-    if (alignment === alignmentOptions.right) {
-        return content.padStart(width);
-    }
-    // center alignment
-    const remainder = Math.max(0, (width - content.length) % 2);
-    const sides = Math.max(0, (width - content.length - remainder) / 2);
-    return " ".repeat(sides) + content + " ".repeat(sides + remainder);
-};
-const toCellText = v => {
-    if (typeof v === "undefined")
-        return "";
-    return String(v).replace(pipeRegex, "\\|");
-};
-const line = (columns, config, forceGutters = false) => {
-    const gutters = forceGutters ? true : config.wrapWithGutters;
-    return ((gutters ? "| " : "  ") +
-        columns.join(gutters ? " | " : "   ") +
-        (gutters ? " |" : "  ") +
-        config.lineEnding);
-};
-const row = (alignments, widths, columns, config) => {
-    const width = columns.length;
-    const values = new Array(width);
-    const first = new Array(width);
-    let height = 1;
-    for (let h = 0; h < width; h++) {
-        const cells = (values[h] = split_text_to_chunks(columns[h], widths[h]));
-        if (cells.length > height)
-            height = cells.length;
-        first[h] = pad(alignments[h], widths[h], cells[0]);
-    }
-    if (height === 1) {
-        return line(first, config, true);
-    }
-    const lines = new Array(height);
-    lines[0] = line(first, config, true);
-    for (let v = 1; v < height; v++) {
-        lines[v] = new Array(width);
-    }
-    for (let h = 0; h < width; h++) {
-        const cells = values[h];
-        let v = 1;
-        for (; v < cells.length; v++) {
-            lines[v][h] = pad(alignments[h], widths[h], cells[v]);
-        }
-        for (; v < height; v++) {
-            lines[v][h] = " ".repeat(widths[h]);
-        }
-    }
-    for (let h = 1; h < height; h++) {
-        lines[h] = line(lines[h], config);
-    }
-    return lines.join("");
-};
-const normalizeOptions = (options) => {
-    const defaults = {
-        toCellText,
-        caseHeaders: true,
-        columns: [],
-        lineEnding: "\n",
-        wrapWidth: Infinity,
-        wrapWithGutters: false
-    };
-    Object.assign(defaults, options);
-    defaults.columns =
-        options?.columns?.map(descriptor => {
-            if (typeof descriptor === "string") {
-                return { name: descriptor };
-            }
-            const align = descriptor.align?.toUpperCase() ??
-                alignmentOptions.left;
-            if (!alignmentSet.has(align)) {
-                throw new RangeError(`Unknown alignment, got ${descriptor.align}`);
-            }
-            return {
-                align,
-                name: descriptor.name
-            };
-        }) ?? [];
-    return defaults;
-};
-const getColumnTitles = (keys, config) => {
-    return keys.map((key, i) => {
-        if (Array.isArray(config.columns)) {
-            const customTitle = config.columns[i]?.name;
-            if (customTitle != null) {
-                return customTitle;
-            }
-        }
-        if (!config.caseHeaders) {
-            return key;
-        }
-        return (0,dist/* sentenceCase */.G8)(key);
-    });
-};
-const getColumnWidths = (input, keys, titles, config) => {
-    return input.reduce((sizes, item) => keys.map((key, i) => Math.max(split_text_to_chunks.width(config.toCellText(item[key]), config.wrapWidth), sizes[i])), titles.map(t => Math.max(columnsWidthMin, split_text_to_chunks.width(t, config.wrapWidth))));
-};
-const getColumnAlignments = (keys, config) => {
-    return keys.map((_, i) => {
-        if (typeof config.columns[i]?.align === "string") {
-            return config.columns[i].align;
-        }
-        return alignmentOptions.left;
-    });
-};
-
-;// CONCATENATED MODULE: ./node_modules/tablemark/dist/index.js
-
-const alignmentOptions = {
-    left: "LEFT",
-    center: "CENTER",
-    right: "RIGHT"
-};
-/* harmony default export */ const tablemark_dist = ((input, options = {}) => {
-    if (typeof input[Symbol.iterator] !== "function") {
-        throw new TypeError(`Expected an iterable, got ${typeof input}`);
-    }
-    const config = normalizeOptions(options);
-    const keys = Object.keys(input[0]);
-    const titles = getColumnTitles(keys, config);
-    const widths = getColumnWidths(input, keys, titles, config);
-    const alignments = getColumnAlignments(keys, config);
-    let table = "";
-    // header line
-    table += row(alignments, widths, titles, config);
-    // header separator
-    table += line(alignments.map((align, i) => (align === alignmentOptions.left || align === alignmentOptions.center
-        ? ":"
-        : "-") +
-        "-".repeat(widths[i] - 2) +
-        (align === alignmentOptions.right || align === alignmentOptions.center
-            ? ":"
-            : "-")), config, true);
-    // table body
-    table += input
-        .map((item, _) => row(alignments, widths, keys.map(key => config.toCellText(item[key])), config))
-        .join("");
-    return table;
-});
-
-
-
-
-/***/ }),
-
 /***/ 294:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -3686,23 +3443,6 @@ module.exports = require("util");
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__nccwpck_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -3719,13 +3459,214 @@ module.exports = require("util");
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(109);
-/******/ 	module.exports = __webpack_exports__;
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+// ESM COMPAT FLAG
+__nccwpck_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
+var core = __nccwpck_require__(186);
+// EXTERNAL MODULE: ./node_modules/sentence-case/dist/index.js
+var dist = __nccwpck_require__(229);
+// EXTERNAL MODULE: ./node_modules/split-text-to-chunks/index.js
+var split_text_to_chunks = __nccwpck_require__(624);
+;// CONCATENATED MODULE: ./node_modules/tablemark/dist/utilities.js
+
+
+
+const columnsWidthMin = 5;
+const pipeRegex = /\|/g;
+const alignmentSet = new Set([
+    "LEFT",
+    "CENTER",
+    "RIGHT"
+]);
+const pad = (alignment, width, content) => {
+    if (alignment == null || alignment === alignmentOptions.left) {
+        return content.padEnd(width);
+    }
+    if (alignment === alignmentOptions.right) {
+        return content.padStart(width);
+    }
+    // center alignment
+    const remainder = Math.max(0, (width - content.length) % 2);
+    const sides = Math.max(0, (width - content.length - remainder) / 2);
+    return " ".repeat(sides) + content + " ".repeat(sides + remainder);
+};
+const toCellText = v => {
+    if (typeof v === "undefined")
+        return "";
+    return String(v).replace(pipeRegex, "\\|");
+};
+const line = (columns, config, forceGutters = false) => {
+    const gutters = forceGutters ? true : config.wrapWithGutters;
+    return ((gutters ? "| " : "  ") +
+        columns.join(gutters ? " | " : "   ") +
+        (gutters ? " |" : "  ") +
+        config.lineEnding);
+};
+const row = (alignments, widths, columns, config) => {
+    const width = columns.length;
+    const values = new Array(width);
+    const first = new Array(width);
+    let height = 1;
+    for (let h = 0; h < width; h++) {
+        const cells = (values[h] = split_text_to_chunks(columns[h], widths[h]));
+        if (cells.length > height)
+            height = cells.length;
+        first[h] = pad(alignments[h], widths[h], cells[0]);
+    }
+    if (height === 1) {
+        return line(first, config, true);
+    }
+    const lines = new Array(height);
+    lines[0] = line(first, config, true);
+    for (let v = 1; v < height; v++) {
+        lines[v] = new Array(width);
+    }
+    for (let h = 0; h < width; h++) {
+        const cells = values[h];
+        let v = 1;
+        for (; v < cells.length; v++) {
+            lines[v][h] = pad(alignments[h], widths[h], cells[v]);
+        }
+        for (; v < height; v++) {
+            lines[v][h] = " ".repeat(widths[h]);
+        }
+    }
+    for (let h = 1; h < height; h++) {
+        lines[h] = line(lines[h], config);
+    }
+    return lines.join("");
+};
+const normalizeOptions = (options) => {
+    const defaults = {
+        toCellText,
+        caseHeaders: true,
+        columns: [],
+        lineEnding: "\n",
+        wrapWidth: Infinity,
+        wrapWithGutters: false
+    };
+    Object.assign(defaults, options);
+    defaults.columns =
+        options?.columns?.map(descriptor => {
+            if (typeof descriptor === "string") {
+                return { name: descriptor };
+            }
+            const align = descriptor.align?.toUpperCase() ??
+                alignmentOptions.left;
+            if (!alignmentSet.has(align)) {
+                throw new RangeError(`Unknown alignment, got ${descriptor.align}`);
+            }
+            return {
+                align,
+                name: descriptor.name
+            };
+        }) ?? [];
+    return defaults;
+};
+const getColumnTitles = (keys, config) => {
+    return keys.map((key, i) => {
+        if (Array.isArray(config.columns)) {
+            const customTitle = config.columns[i]?.name;
+            if (customTitle != null) {
+                return customTitle;
+            }
+        }
+        if (!config.caseHeaders) {
+            return key;
+        }
+        return (0,dist/* sentenceCase */.G8)(key);
+    });
+};
+const getColumnWidths = (input, keys, titles, config) => {
+    return input.reduce((sizes, item) => keys.map((key, i) => Math.max(split_text_to_chunks.width(config.toCellText(item[key]), config.wrapWidth), sizes[i])), titles.map(t => Math.max(columnsWidthMin, split_text_to_chunks.width(t, config.wrapWidth))));
+};
+const getColumnAlignments = (keys, config) => {
+    return keys.map((_, i) => {
+        if (typeof config.columns[i]?.align === "string") {
+            return config.columns[i].align;
+        }
+        return alignmentOptions.left;
+    });
+};
+
+;// CONCATENATED MODULE: ./node_modules/tablemark/dist/index.js
+
+const alignmentOptions = {
+    left: "LEFT",
+    center: "CENTER",
+    right: "RIGHT"
+};
+/* harmony default export */ const tablemark_dist = ((input, options = {}) => {
+    if (typeof input[Symbol.iterator] !== "function") {
+        throw new TypeError(`Expected an iterable, got ${typeof input}`);
+    }
+    const config = normalizeOptions(options);
+    const keys = Object.keys(input[0]);
+    const titles = getColumnTitles(keys, config);
+    const widths = getColumnWidths(input, keys, titles, config);
+    const alignments = getColumnAlignments(keys, config);
+    let table = "";
+    // header line
+    table += row(alignments, widths, titles, config);
+    // header separator
+    table += line(alignments.map((align, i) => (align === alignmentOptions.left || align === alignmentOptions.center
+        ? ":"
+        : "-") +
+        "-".repeat(widths[i] - 2) +
+        (align === alignmentOptions.right || align === alignmentOptions.center
+            ? ":"
+            : "-")), config, true);
+    // table body
+    table += input
+        .map((item, _) => row(alignments, widths, keys.map(key => config.toCellText(item[key])), config))
+        .join("");
+    return table;
+});
+
+
+
+;// CONCATENATED MODULE: ./lib/main.js
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const json = core.getInput('json');
+            core.debug(`Received json string ${json}...`); // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+            const jsonArray = JSON.parse(json);
+            core.debug(`Parsed json string...`);
+            if (!Array.isArray(jsonArray)) {
+                return core.setFailed('Input json is not an array.');
+            }
+            const table = tablemark_dist(jsonArray);
+            core.debug(`Table: ${table}`);
+            core.setOutput('table', table);
+        }
+        catch (error) {
+            if (error instanceof Error)
+                core.setFailed(error.message);
+        }
+    });
+}
+run();
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map
