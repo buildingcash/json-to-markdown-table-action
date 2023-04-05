@@ -15,6 +15,7 @@ async function run(): Promise<void> {
 
     const table = tablemark(jsonArray);
 
+    core.debug(`Table: ${table}`);
     core.setOutput('table', table);
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message);
