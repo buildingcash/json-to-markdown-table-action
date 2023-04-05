@@ -1,19 +1,24 @@
-import * as core from '@actions/core'
-import {wait} from './wait'
+import * as core from '@actions/core';
+import tablemark from 'tablemark';
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    const json: string = core.getInput('json');
+    core.debug(`Received json string ${json}...`); // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const jsonArray = JSON.parse(json);
+    core.debug(`Parsed json string...`);
 
-    core.setOutput('time', new Date().toTimeString())
+    if (!Array.isArray(jsonArray)) {
+      return core.setFailed('Input json is not an array.');
+    }
+
+    const table = tablemark(jsonArray);
+
+    core.setOutput('table', table);
   } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message)
+    if (error instanceof Error) core.setFailed(error.message);
   }
 }
 
-run()
+run();

@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
-  "version": "0.0.0",
+  "name": "json-to-markdown-table-action",
+  "version": "1.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "json-to-markdown-table github action",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -25,7 +25,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.10.0"
+    "@actions/core": "^1.10.0",
+    "tablemark": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.0",

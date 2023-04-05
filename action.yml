@@ -1,11 +1,10 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'json-to-markdown-table-action'
+description: 'Converts a JSON array into a markdown table.'
+author: 'getjasp'
 inputs:
-  milliseconds: # change this
+  json: # change this
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'Stringified JSON array to transform into a markdown table.'
 runs:
   using: 'node16'
   main: 'dist/index.js'
