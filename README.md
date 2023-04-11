@@ -4,7 +4,20 @@ Github Action that uses [`tablemark`](https://github.com/haltcase/tablemark) to 
 
 ## Usage
 
+This action takes a single `json` input argument and exposes a single `table` output.
+
+```yaml
+- uses: buildingcash/json-to-markdown-table-action@v1
+  id: table
+  with:
+    json: ${{ steps.breaking.outputs.results }}
+- run: echo ${{ steps.table.outputs.table }}
+```
+
+## Example
+
 Here is an example on how to use this action. This example posts a comment on an PR if there are breaking changes in proto files.
+
 
 ![Result](assets/example_breaking.png)
 
