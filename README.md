@@ -10,7 +10,7 @@ This action takes a single `json` input argument and exposes a single `table` ou
 - uses: buildingcash/json-to-markdown-table-action@v1
   id: table
   with:
-    json: ${{ steps.breaking.outputs.results }}
+    json: "[{\"column1\": \"First line\"}, {\"column1\": \"Second line\"}]"
 - run: echo ${{ steps.table.outputs.table }}
 ```
 
