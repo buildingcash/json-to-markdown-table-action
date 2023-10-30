@@ -10,7 +10,7 @@ jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           npm install
       - run: |
@@ -18,7 +18,7 @@ jobs:
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./
         with:
           json: '[{"path":"auth.proto","start_line":128,"start_column":1,"end_line":129,"end_column":2,"type":"FIELD_NO_DELETE","message":"Previously present field"},{"path":"auth.proto","start_line":134,"start_column":1,"end_line":136,"end_column":2,"type":"FIELD_NO_DELETE","message":"Previously present field"}]'
