@@ -28,7 +28,7 @@
     "tablemark": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.5.9",
+    "@types/node": "^20.11.7",
     "@vercel/ncc": "^0.36.1",
     "jest": "^29.6.4",
     "prettier": "2.8.8",
