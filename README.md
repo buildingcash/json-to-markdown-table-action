@@ -14,6 +14,19 @@ This action takes a single `json` input argument and exposes a single `table` ou
 - run: echo ${{ steps.table.outputs.table }}
 ```
 
+
+## Usage
+
+This action takes a single `json_file_path` input argument and exposes a single `table` output.
+
+```yaml
+- uses: buildingcash/json-to-markdown-table-action@v1
+  id: table
+  with:
+    json_file_path: "sample_json_file.json"
+- run: echo ${{ steps.table.outputs.table }}
+```
+
 ## Example
 
 Here is an example on how to use this action. This example posts a comment on an PR if there are breaking changes in proto files.
