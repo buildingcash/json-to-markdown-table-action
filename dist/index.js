@@ -3630,6 +3630,8 @@ const alignmentOptions = {
 
 
 
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __nccwpck_require__(147);
 ;// CONCATENATED MODULE: ./lib/main.js
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -3642,13 +3644,36 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 
+
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const json = core.getInput('json');
-            core.debug(`Received json string ${json}...`); // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
-            const jsonArray = JSON.parse(json);
-            core.debug(`Parsed json string...`);
+            const jsonFilePath = core.getInput('json_file_path');
+            let jsonArray = [];
+            core.debug(`json: ${json}`);
+            core.debug(`json_file_path: ${jsonFilePath}`);
+            // check if json or json_file_path is provided
+            if (!json && !jsonFilePath) {
+                return core.setFailed('Input json or json_file_path is required. If both are provided, json_file_path will be used.');
+            }
+            if (jsonFilePath) {
+                core.debug(`Received json file path ${jsonFilePath}...`); // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+                if (!(0,external_fs_.existsSync)(jsonFilePath)) {
+                    return core.setFailed(`File ${jsonFilePath} not found.`);
+                }
+                else {
+                    const jsonFile = (0,external_fs_.readFileSync)(jsonFilePath, 'utf8');
+                    core.debug(`Read json file ${jsonFilePath}...`);
+                    jsonArray = JSON.parse(jsonFile);
+                    core.debug(`Parsed json file from ${jsonFilePath}...`);
+                }
+            }
+            if (!jsonFilePath && json) {
+                core.debug(`Received json string ${json}...`); // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+                jsonArray = JSON.parse(json);
+                core.debug(`Parsed json string...`);
+            }
             if (!Array.isArray(jsonArray)) {
                 return core.setFailed('Input json is not an array.');
             }

@@ -2,11 +2,14 @@ name: 'json-to-markdown-table-action'
 description: 'Converts a JSON array into a markdown table.'
 author: 'getjasp'
 inputs:
+  json_file_path:
+    required: false
+    description: 'Path to the JSON file to transform into a markdown table.'
   json: # change this
-    required: true
+    required: false
     description: 'Stringified JSON array to transform into a markdown table.'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
 branding:
   icon: 'arrow-right-circle'
