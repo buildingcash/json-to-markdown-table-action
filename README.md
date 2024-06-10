@@ -4,6 +4,8 @@ Github Action that uses [`tablemark`](https://github.com/haltcase/tablemark) to 
 
 ## Usage
 
+### With a JSON string
+
 This action takes a single `json` input argument and exposes a single `table` output.
 
 ```yaml
@@ -15,7 +17,7 @@ This action takes a single `json` input argument and exposes a single `table` ou
 ```
 
 
-## Usage
+### With a path to a JSON file
 
 This action takes a single `json_file_path` input argument and exposes a single `table` output.
 
