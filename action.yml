@@ -9,7 +9,7 @@ inputs:
     required: false
     description: 'Stringified JSON array to transform into a markdown table.'
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'
 branding:
   icon: 'arrow-right-circle'

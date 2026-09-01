@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import tablemark from 'tablemark';
-import { readFileSync, existsSync } from 'fs';
+import {readFileSync, existsSync} from 'fs';
 
 async function run(): Promise<void> {
   try {
@@ -13,7 +13,9 @@ async function run(): Promise<void> {
 
     // check if json or json_file_path is provided
     if (!json && !jsonFilePath) {
-      return core.setFailed('Input json or json_file_path is required. If both are provided, json_file_path will be used.');
+      return core.setFailed(
+        'Input json or json_file_path is required. If both are provided, json_file_path will be used.'
+      );
     }
 
     if (jsonFilePath) {
@@ -35,7 +37,6 @@ async function run(): Promise<void> {
       jsonArray = JSON.parse(json);
       core.debug(`Parsed json string...`);
     }
-
 
     if (!Array.isArray(jsonArray)) {
       return core.setFailed('Input json is not an array.');
